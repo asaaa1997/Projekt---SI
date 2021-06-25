@@ -41,7 +41,8 @@ Użytkownicy:
     
     o Edycja i usuwanie tagów
     
-Projekt został stworzony z użyciem Symfony, PHP.
+Projekt został stworzony z użyciem PHP, Twig.
+Wykorzystano Symfony, Docker.
 
 Autorką projektu jest Joanna Pajor.
 
