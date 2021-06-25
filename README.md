@@ -46,9 +46,13 @@ Projekt został stworzony z użyciem Symfony, PHP.
 Autorką projektu jest Joanna Pajor.
 
 Przykładowe dane do logowania:
+
 • Użytkownik
+
     login: user1
     hasło: user1234
+    
 • Administrator
+
     login: admin0
     hasło: admin1234
