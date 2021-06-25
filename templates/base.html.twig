@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ url('advert_index') }}" title="Ogłoszenia">Ogłoszenia</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    {{ 'label_advert'|trans }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ url('advert_index') }}">{{ 'title_advert_list'|trans }}</a>
+                    {% if is_granted('ROLE_USER') %}
+                    <a class="dropdown-item" href="{{ url('advert_create') }}">{{ 'title_advert_create'|trans }}</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="dropdown-item"
+                           href="{{ url('advert_inactive') }}">{{ 'title_inactive_record_list'|trans }}</a>
+                    {% endif %}
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    {{ 'label_category'|trans }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ url('category_index') }}">{{ 'title_category_list'|trans }}</a>
+                    <a class="dropdown-item" href="{{ url('category_create') }}">{{ 'title_category_create'|trans }}</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    {{ 'label_tag'|trans }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ url('tag_index') }}">{{ 'title_tag_list'|trans }}</a>
+                    <a class="dropdown-item" href="{{ url('tag_create') }}">{{ 'title_tag_create'|trans }}</a>
+                </div>
+            </li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('user_index') }}">{{ 'title_user_index'|trans }} </a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('user_show') }}">{{ 'title_user_show'|trans }} </a>
+            </li>
+            {% endif %}
+        </ul>
+        {% if is_granted('ROLE_USER') %}
+            <div>
+                <a href="{{ url('app_logout') }}" class="btn btn-outline-primary"
+                   role="button">{{ 'action_logout'|trans }}</a>
+            </div>
+        {% else %}
+            <div>
+                <a href="{{ url('app_register') }}" class="btn btn-outline-primary"
+                   role="button">{{ 'action_register'|trans }}</a>
+            </div>
+            <div>
+                <a href="{{ url('app_login') }}" class="btn btn-outline-primary"
+                   role="button">{{ 'action_login'|trans }}</a>
+            </div>
+        {% endif %}
+    </div>
+</nav>
+{% if is_granted('ROLE_USER') %}
+    <br>
+    <div>{{ app.user.username }}</div>
+{% endif %}
+<div class="container-fluid">
+    {% include 'default/_flash_messages.html.twig' %}
+    {% block body %}{% endblock %}
+</div>
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+{% endblock %}
+</body>
+</html>

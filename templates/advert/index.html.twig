@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_advert_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <br>
+    <h1>{{ 'title_advert_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'advert.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'advert.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_date'|trans, 'advert.date') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'advert.updatedAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'category.name') }}</th>
+                <th>{{ 'label_tag'|trans }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for advert in pagination.items %}
+                <tr>
+                    <td>{{ advert.id }}</td>
+                    <td>{{ advert.title }}</td>
+                    <td>{{ advert.date|format_date('long') }}</td>
+                    <td>{{ advert.updatedAt|format_date('long') }}</td>
+                    <td>
+                        <a href="{{ url('advert_index', {'filters' : {'category' : advert.category.id}}) }}"
+                           title="{{ advert.category.name }}">
+                            {{ advert.category.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if advert.tags is defined and advert.tags|length %}
+                            {% for tag in advert.tags %}
+                                <a href="{{ url('advert_index', {'filters' : {'tag' : tag.id}}) }}" title="{{ tag.content }}">
+                                    {{ tag.content }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if is_granted('VIEW', advert) %}
+                            <a href="{{ url('advert_show', {id: advert.id}) }}" title="{{ 'action_view'|trans }}">
+                                {{ 'action_view'|trans }}
+                            </a>
+                            <br>
+                        {% endif %}
+                        {% if is_granted('EDIT', advert) %}
+                            <a href="{{ url('advert_edit', {id: advert.id}) }}" title="{{ 'action_edit'|trans }}">
+                                {{ 'action_edit'|trans }}
+                            </a>
+                            <br>
+                        {% endif %}
+                        {% if is_granted('DELETE', advert) %}
+                            <a href="{{ url('advert_delete', {id: advert.id}) }}" title="{{ 'action_delete'|trans }}">
+                                {{ 'action_delete'|trans }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message_empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

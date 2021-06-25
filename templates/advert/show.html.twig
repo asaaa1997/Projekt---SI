@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_one_advert_list'|trans({'%id%': advert.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <br>
+    <h1>{{ 'title_one_advert_list'|trans({'%id%': advert.id|default('')}) }}</h1>
+    {% if advert is defined and advert|length %}
+        <dl>
+            <dt>{{ 'label_id'|trans }}</dt>
+            <dd>{{ advert.id }}</dd>
+            <dt>{{ 'label_title'|trans }}</dt>
+            <dd>{{ advert.title }}</dd>
+            <dt>{{ 'label_content'|trans }}</dt>
+            <dd>{{ advert.content }}</dd>
+            <dt>{{ 'label_date'|trans }}</dt>
+            <dd>{{ advert.date|format_date('long') }}</dd>
+            <dt>{{ 'label_updated_at'|trans }}</dt>
+            <dd>{{ advert.updatedAt|format_date('long') }}</dd>
+            <dt>{{ 'label_category'|trans }}</dt>
+            <dd>{{ advert.category.name }}</dd>
+            <dt>{{ 'label_author'|trans }}</dt>
+            <dd>{{ advert.author.username }}</dd>
+            <dt>{{ 'label_tag'|trans }}</dt>
+            <dd>
+                {% for tag in advert.getTags() %}
+                    {{ tag.content }}
+                {% endfor %}
+            </dd>
+        </dl>
+        <p>
+            <a href="{{ url('advert_index') }}" title="{{ 'action_back_to_list'|trans }}">
+                {{ 'action_back_to_list'|trans }}
+            </a>
+        </p>
+    {% else %}
+        <p>
+            {{ 'message_item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}
